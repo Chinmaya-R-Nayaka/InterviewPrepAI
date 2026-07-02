@@ -1,103 +1,64 @@
-const User = require('../models/User');
-const {generateToken} = require('../utils/generateToken');
-const { registerSchema, loginSchema } = require('../validators/authValidator');
+const User = require("../models/User");
+const generateToken = require("../utils/generateToken");
+const asyncHandler = require("../utils/asyncHandler");
 
-const registerUser = async (req, res) =>{
-    try{
-        // Validate the user
-        const validateData = registerSchema.parse(req.body);
-        const {name, email, password} = validateData;
+const registerUser = asyncHandler(async (req, res) => {
+    const { name, email, password } = req.body;
 
-        const duplicate = await User.findOne({email});
-        if(duplicate){
-            // 409 --> The request conflicts with the current state of the server.
-            return res.status(409).json({
-                success : false,
-                message : "User already exists",
-            });
-        }
-        
-        const user = await User.create({name, email, password});
-        const token = generateToken(user._id);
-
-        res.status(201).json({
-            success: true,
-            message: "User registered successfully",
-            token,
-            user: {
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                avatar: user.avatar,
-                streak: user.streak,
-            },
-        });
+    const duplicate = await User.findOne({ email });
+    if (duplicate){
+        const err = new Error("User already exists");
+        err.statusCode = 409;
+        throw err;
     }
-    catch(error){
-        if (error.name === "ZodError") {
-            return res.status(400).json({
-                success: false,
-                errors: error.issues,
-            });
-        }
 
-        console.error(error);
-        res.status(500).json({
-            success: false,
-            message: "Internal Server Error",
-        });
+    const user = await User.create({ name, email, password });
+    const token = generateToken(user._id);
+
+    res.status(201).json({
+        success: true,
+        message: "User Registered Successfully",
+        token,
+        user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar,
+            streak: user.streak
+        }
+    });
+});
+
+const loginUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if(!user){
+        const err = new Error("Invalid Email or Password");
+        err.statusCode = 401;
+        throw err;
     }
-}
 
-const loginUser = async (req, res) =>{
-    try{
-        const validateData = loginSchema.parse(req.body);
-        const {email, password} = validateData;
-
-        const user = await User.findOne({email});
-        if(!user){
-            return res.status(401).json({
-                success:false,
-                message:"Invalid Email or Password"
-            });
-        }
-
-        const isMatch = await user.comparePassword(password);
-        if(!isMatch){
-            return res.status(401).json({
-                success:false,
-                message:"Invalid Email or Password"
-            });
-        }
-
-        const token = generateToken(user._id);
-        return res.status(200).json({
-            success:true,
-            message:"Login Successful",
-            token,
-            user:{
-                id:user._id,
-                name:user.name,
-                email:user.email,
-                avatar:user.avatar,
-                streak:user.streak
-            }
-        });
+    const match = await user.comparePassword(password);
+    if(!match){
+        const err = new Error("Invalid Email or Password");
+        err.statusCode = 401;
+        throw err;
     }
-    catch(error){
-        if(error.name==="ZodError"){
-            return res.status(400).json({
-                success:false,
-                errors:error.issues
-            });
-        }
 
-        console.error(error);
-        res.status(500).json({
-            success:false,
-            message:"Internal Server Error"
-        });
-    }
-}
+    const token = generateToken(user._id);
+    res.status(200).json({
+        success: true,
+        message: "Login Successful",
+        token,
+        user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar,
+            streak: user.streak
+        }
+    });
+});
 
 module.exports = {registerUser, loginUser};
