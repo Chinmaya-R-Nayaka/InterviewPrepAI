@@ -10,7 +10,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const duplicate = await User.findOne({ email });
     if (duplicate){
         const err = new Error("User already exists");
-        err.statusCode = 409;
+        err.statusCode = 409; console.log(err);
         throw err;
     }
 

@@ -43,7 +43,7 @@ userSchema.pre("save", async function (next) {
     // isModified("field in schema")
 
     // Hash the password
-    this.password = await bcrypt.hash(this.password, 10);
+    this.password = await bcrypt.hash(this.password, 10);;
 });
 
 userSchema.methods.comparePassword = async function (enteredPassword) {
