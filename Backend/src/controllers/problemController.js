@@ -18,12 +18,37 @@ const addProblem = asyncHandler(async (req, res) => {
 });
 
 const getAllProblems = asyncHandler(async (req, res) => {
-    const problems = await Problem.find({user: req.user._id,}).sort({ createdAt: -1 });
+
+    const { search = "", difficulty, status,
+        platform, topic, page = 1, limit = 10 } = req.query;
+
+    const query = { user: req.user._id };
+
+    if(search){
+        query.title = {
+            $regex: search,
+            $options: "i"
+        };
+    }
+
+    if(difficulty) query.difficulty = difficulty;
+    if(status) query.status = status;
+    if(platform) query.platform = platform;
+    if(topic) query.topic = topic;
+
+    const problems = await Problem.find(query)
+        .sort({createdAt: -1})
+        .skip((page - 1) * limit)
+        .limit(Number(limit));
+
+    const total = await Problem.countDocuments(query);
 
     res.status(200).json({
         success: true,
-        count: problems.length,
-        problems,
+        total,
+        page: Number(page),
+        totalPages: Math.ceil(total / limit),
+        problems
     });
 
 });

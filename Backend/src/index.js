@@ -6,7 +6,9 @@ const cookieParser = require('cookie-parser');
 // const cors = require('cors');
 const userRouter = require('./routes/authRoutes');
 const problemRouter = require("./routes/problemRoutes");
+const dashboardRouter = require("./routes/dashboardRoutes");
 const errorMiddleware = require("./middleware/errorMiddleware");
+const aiRouter = require("./routes/aiRoutes");
 
 // app.use(cors({
 //     origin : 'http://localhost:5173', // origin : '*' --> any website can access antha
@@ -30,6 +32,8 @@ app.get("/api/test", authMiddleware, (req, res) => {
 
 app.use("/api/auth", userRouter);
 app.use("/api/problems", problemRouter);
+app.use("/api/dashboard", dashboardRouter);
+app.use("/api/ai", aiRouter);
 // for debuging
 // app.use("/problem",(req, res, next) => {
 //     console.log("Route HIT: problem");
