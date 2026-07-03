@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const { generateToken } = require("../utils/generateToken");
 const asyncHandler = require("../utils/asyncHandler");
+const cookieOptions = require("../utils/cookieOptions");
+
 
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
@@ -14,20 +16,21 @@ const registerUser = asyncHandler(async (req, res) => {
 
     const user = await User.create({ name, email, password });
     const token = generateToken(user._id);
+    res.cookie("token", token, cookieOptions);
 
     res.status(201).json({
         success: true,
         message: "User Registered Successfully",
-        token,
         user: {
             id: user._id,
             name: user.name,
             email: user.email,
             avatar: user.avatar,
-            streak: user.streak
-        }
+            streak: user.streak,
+        },
     });
 });
+
 
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
@@ -47,18 +50,37 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     const token = generateToken(user._id);
+    res.cookie("token", token, cookieOptions);
+
     res.status(200).json({
         success: true,
         message: "Login Successful",
-        token,
         user: {
             id: user._id,
             name: user.name,
             email: user.email,
             avatar: user.avatar,
-            streak: user.streak
-        }
+            streak: user.streak,
+        },
     });
 });
 
-module.exports = {registerUser, loginUser};
+
+const logoutUser = asyncHandler(async (req, res) => {
+    res.clearCookie("token", cookieOptions);
+    res.status(200).json({
+        success: true,
+        message: "Logged out successfully",
+    });
+});
+
+
+const getCurrentUser = asyncHandler(async (req, res) => {
+    res.status(200).json({
+        success: true,
+        user: req.user
+    });
+});
+
+
+module.exports = {registerUser, loginUser, logoutUser, getCurrentUser};

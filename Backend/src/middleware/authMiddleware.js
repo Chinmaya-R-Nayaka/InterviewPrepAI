@@ -4,11 +4,11 @@ const User = require("../models/User");
 const authMiddleware = async (req, res, next) => {
     try{
         console.log(req.headers.authorization);
-        const authHeader = req.headers.authorization;
-        if(!authHeader || !authHeader.startsWith("Bearer ")){
+        const token = req.cookies.token;
+        if(!token){
             return res.status(401).json({
                 success: false,
-                message: "Access Denied"
+                message: "Access Denied",
             });
         }
 
