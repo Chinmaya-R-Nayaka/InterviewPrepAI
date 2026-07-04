@@ -1,48 +1,102 @@
-const DashboardCard = ({
+import { motion } from "framer-motion";
+import AnimatedNumber from "../common/AnimatedNumber";
+
+const DashboardCards = ({
     title,
     value,
     icon,
-    color = "primary",
+    color = "text-primary",
 }) => {
+
+    const numericValue =
+        typeof value === "number"
+            ? value
+            : parseInt(value);
 
     return (
 
-        <div className="card bg-base-100 shadow-md">
+        <motion.div
 
-            <div className="card-body">
+            initial={{ opacity: 0, y: 20 }}
 
-                <div className="flex justify-between items-center">
+            animate={{ opacity: 1, y: 0 }}
 
-                    <div>
+            whileHover={{
+                y: -6,
+                scale: 1.02,
+            }}
 
-                        <p className="text-sm opacity-60">
+            transition={{
+                duration: 0.3,
+            }}
 
-                            {title}
+            className="
+                bg-base-100
+                border
+                border-base-300
+                rounded-2xl
+                shadow-lg
+                p-6
+                cursor-pointer
+            "
 
-                        </p>
+        >
 
-                        <h2 className="text-3xl font-bold mt-2">
+            <div className="flex justify-between items-start">
 
-                            {value}
+                <div>
 
-                        </h2>
+                    <p className="text-sm text-base-content/70 font-medium">
 
-                    </div>
+                        {title}
 
-                    <div className={color}>
+                    </p>
 
-                        {icon}
+                    <h2 className="text-4xl font-bold mt-4">
 
-                    </div>
+                        {
+
+                            Number.isNaN(numericValue)
+
+                                ?
+
+                                value
+
+                                :
+
+                                <AnimatedNumber value={numericValue} />
+
+                        }
+
+                    </h2>
+
+                </div>
+
+                <div
+
+                    className={`
+                        h-14
+                        w-14
+                        rounded-xl
+                        bg-base-200
+                        flex
+                        items-center
+                        justify-center
+                        ${color}
+                    `}
+
+                >
+
+                    {icon}
 
                 </div>
 
             </div>
 
-        </div>
+        </motion.div>
 
     );
 
 };
 
-export default DashboardCard;
+export default DashboardCards;

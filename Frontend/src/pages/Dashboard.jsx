@@ -1,4 +1,8 @@
-import DashboardCard from "../components/dashboard/DashboardCards";
+import DashboardCards from "../components/dashboard/DashboardCards";
+import ProgressChart from "../components/dashboard/ProgressChart";
+import RecentActivity from "../components/dashboard/RecentActivity";
+import DailyGoal from "../components/dashboard/DailyGoal";
+import QuickActions from "../components/dashboard/QuickActions";
 
 import {
     Code2,
@@ -38,34 +42,46 @@ const Dashboard = () => {
 
             <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-6">
 
-                <DashboardCard
+                <DashboardCards
                     title="Problems Solved"
-                    value="156"
+                    value={156}
                     icon={<Code2 size={34} />}
                     color="text-info"
                 />
 
-                <DashboardCard
+                <DashboardCards
                     title="AI Chats"
-                    value="42"
+                    value={42}
                     icon={<BrainCircuit size={34} />}
                     color="text-success"
                 />
 
-                <DashboardCard
+                <DashboardCards
                     title="Mock Interviews"
-                    value="7"
+                    value={7}
                     icon={<Mic size={34} />}
                     color="text-warning"
                 />
 
-                <DashboardCard
+                <DashboardCards
                     title="Current Streak"
-                    value="15 🔥"
+                    value={15}
                     icon={<Flame size={34} />}
                     color="text-error"
                 />
 
+            </div>
+            <div className="grid lg:grid-cols-3 gap-6 mt-8">
+
+                <div className="lg:col-span-2">
+                    <ProgressChart />
+                </div>
+                <DailyGoal />
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-6 mt-8">
+                <RecentActivity />
+                <QuickActions />
             </div>
 
         </div>
