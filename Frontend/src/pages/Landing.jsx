@@ -1,5 +1,5 @@
-import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
+import Navbar from "../components/common/Navbar";
+import Hero from "../components/dashboard/DashboardHeader";
 
 const Landing = () => {
     return (

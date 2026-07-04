@@ -9,8 +9,9 @@ import AI from "../pages/AI";
 import MockInterview from "../pages/MockInterview";
 import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
+import DashboardLayout from "../layouts/DashboardLayout";
 
-import ProtectedRoute from "../components/ProtectedRoute";
+import ProtectedRoute from "../components/common/ProtectedRoute";
 
 const AppRoutes = () => {
 
@@ -24,51 +25,38 @@ const AppRoutes = () => {
 
             <Route path="/register" element={<Register />} />
 
+            <Route element={<ProtectedRoute />}>
+
+        <Route element={<DashboardLayout />}>
+
             <Route
                 path="/dashboard"
-                element={
-                    <ProtectedRoute>
-                        <Dashboard />
-                    </ProtectedRoute>
-                }
+                element={<Dashboard />}
             />
 
             <Route
                 path="/problems"
-                element={
-                    <ProtectedRoute>
-                        <Problems />
-                    </ProtectedRoute>
-                }
+                element={<Problems />}
             />
 
             <Route
                 path="/ai"
-                element={
-                    <ProtectedRoute>
-                        <AI />
-                    </ProtectedRoute>
-                }
+                element={<AI />}
             />
 
             <Route
                 path="/mock-interview"
-                element={
-                    <ProtectedRoute>
-                        <MockInterview />
-                    </ProtectedRoute>
-                }
+                element={<MockInterview />}
             />
 
             <Route
                 path="/profile"
-                element={
-                    <ProtectedRoute>
-                        <Profile />
-                    </ProtectedRoute>
-                }
+                element={<Profile />}
             />
 
+        </Route>
+
+    </Route>
             <Route path="*" element={<NotFound />} />
 
         </Routes>
