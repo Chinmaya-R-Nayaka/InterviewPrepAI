@@ -8,12 +8,18 @@ const AIAssistant = () => {
 
     return (
 
-        <div className="relative h-[calc(100vh-110px)] rounded-2xl overflow-hidden border border-base-300 bg-base-100 flex">
+        <div className="h-[calc(100vh-110px)] rounded-2xl overflow-hidden border border-base-300 bg-base-100 flex">
 
-            <ChatSidebar
-                sidebarOpen={sidebarOpen}
-                setSidebarOpen={setSidebarOpen}
-            />
+            <div
+                className={`transition-all duration-300 ${
+                    sidebarOpen ? "w-80" : "w-16"
+                }`}
+            >
+                <ChatSidebar
+                    sidebarOpen={sidebarOpen}
+                    setSidebarOpen={setSidebarOpen}
+                />
+            </div>
 
             <ChatWindow
                 sidebarOpen={sidebarOpen}

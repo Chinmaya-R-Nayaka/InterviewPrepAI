@@ -8,14 +8,6 @@ import useDashboard from "../hooks/useDashboard";
 import {Code2, BrainCircuit, Flame, Mic} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
-// const { dashboard, loading, error} = useDashboard();
-// if(loading){
-//     return <div>Loading...</div>;
-// }
-// if(error){
-//     return <div>Something went wrong.</div>;
-// }
-
 const Dashboard = () => {
 
     const { user } = useAuth();

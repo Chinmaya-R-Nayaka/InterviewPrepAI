@@ -53,7 +53,7 @@ const GlobalSidebar = ({ open, setOpen }) => {
         },
         {
             name: "Mock Interview",
-            path: "/mock",
+            path: "/mock-interview",
             icon: Mic,
         },
         {

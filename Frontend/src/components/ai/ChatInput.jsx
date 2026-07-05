@@ -1,7 +1,7 @@
 import { SendHorizontal, Loader2 } from "lucide-react";
 import { useState } from "react";
 
-const ChatInput = ({ onSend, loading }) => {
+const ChatInput = ({ onSend, loading, disabled }) => {
 
     const [message, setMessage] = useState("");
 
@@ -25,7 +25,7 @@ const ChatInput = ({ onSend, loading }) => {
                     className="input input-bordered flex-1"
                     placeholder="Ask your question..."
                     value={message}
-                    disabled={loading}
+                    disabled={disabled}
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyDown={(e) => {
                         if (e.key === "Enter") handleSubmit();
@@ -35,7 +35,7 @@ const ChatInput = ({ onSend, loading }) => {
                 <button
                     className="btn btn-primary"
                     onClick={handleSubmit}
-                    disabled={loading}
+                    disabled={disabled}
                 >
 
                     {

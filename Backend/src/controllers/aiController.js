@@ -1,6 +1,6 @@
 const ai = require("../config/gemini");
 const InterviewSession = require("../models/InterviewSession");
-const { interviewPrompt, evaluateAnswerPrompt, replyPrompt } = require("../prompts/aiPrompts");
+const { interviewPrompt, evaluateAnswerPrompt, replyPrompt, mockInterviewPrompt } = require("../prompts/aiPrompts");
 const { generateAIResponse } = require("../services/aiService");
 const asyncHandler = require("../utils/asyncHandler");
 
