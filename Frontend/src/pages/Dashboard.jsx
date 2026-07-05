@@ -3,19 +3,34 @@ import ProgressChart from "../components/dashboard/ProgressChart";
 import RecentActivity from "../components/dashboard/RecentActivity";
 import DailyGoal from "../components/dashboard/DailyGoal";
 import QuickActions from "../components/dashboard/QuickActions";
+import useDashboard from "../hooks/useDashboard";
 
-import {
-    Code2,
-    BrainCircuit,
-    Flame,
-    Mic,
-} from "lucide-react";
-
+import {Code2, BrainCircuit, Flame, Mic} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+
+// const { dashboard, loading, error} = useDashboard();
+// if(loading){
+//     return <div>Loading...</div>;
+// }
+// if(error){
+//     return <div>Something went wrong.</div>;
+// }
 
 const Dashboard = () => {
 
     const { user } = useAuth();
+    const { dashboard, loading, error } = useDashboard();
+
+    if (loading) {
+        return <div className="p-10">Loading Dashboard...</div>;
+    }
+    if(error){
+        return <div>Something went wrong.</div>;
+    }
+
+    if (!dashboard) {
+        return <div className="p-10">Unable to load dashboard.</div>;
+    }
 
     return (
 
@@ -44,28 +59,28 @@ const Dashboard = () => {
 
                 <DashboardCards
                     title="Problems Solved"
-                    value={156}
+                    value={dashboard.solved}
                     icon={<Code2 size={34} />}
                     color="text-info"
                 />
 
                 <DashboardCards
                     title="AI Chats"
-                    value={42}
+                    value={0}
                     icon={<BrainCircuit size={34} />}
                     color="text-success"
                 />
 
                 <DashboardCards
                     title="Mock Interviews"
-                    value={7}
+                    value={0}
                     icon={<Mic size={34} />}
                     color="text-warning"
                 />
 
                 <DashboardCards
                     title="Current Streak"
-                    value={15}
+                    value={dashboard.revisionToday}
                     icon={<Flame size={34} />}
                     color="text-error"
                 />

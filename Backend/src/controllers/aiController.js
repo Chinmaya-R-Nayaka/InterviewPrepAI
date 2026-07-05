@@ -1,42 +1,43 @@
 const ai = require("../config/gemini");
 const InterviewSession = require("../models/InterviewSession");
-const { interviewPrompt, evaluateAnswerPrompt } = require("../prompts/aiPrompts");
+const { interviewPrompt, evaluateAnswerPrompt, replyPrompt } = require("../prompts/aiPrompts");
 const { generateAIResponse } = require("../services/aiService");
 const asyncHandler = require("../utils/asyncHandler");
 
 
 const chatWithAI = asyncHandler(async (req, res) => {
 
-    const { prompt } = req.body;
+    const { message } = req.body;
 
-    if(!prompt){
+    if (!message) {
         return res.status(400).json({
             success: false,
-            message: "Prompt is required",
+            message: "Message is required",
         });
     }
 
-    const systemPrompt = `You are an expert DSA and Software Engineering interviewer.
-        Always answer in this format:
-        1. Concept
-        2. Intuition
-        3. Algorithm
-        4. Time Complexity
-        5. Space Complexity
-        6. Common Mistakes
-        7. Interview Follow-up Questions
+    try{
+        const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: replyPrompt(message),
+        });
 
-        Keep answers beginner-friendly.`;
+        res.status(200).json({
+            success: true,
+            reply: response.text,
+        });
+    }
+    catch (err) {
 
-    const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: `${systemPrompt}\n\n${prompt}`,
-    });
+        console.error(err);
 
-    res.status(200).json({
-        success: true,
-        answer: response.text,
-    });
+        return res.status(500).json({
+            success: false,
+            message: "Gemini is currently unavailable. Please try again.",
+        });
+
+    }
+
 });
 
 

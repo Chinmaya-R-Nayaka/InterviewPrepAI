@@ -20,15 +20,35 @@ const addProblem = asyncHandler(async (req, res) => {
 const getAllProblems = asyncHandler(async (req, res) => {
 
     const { search = "", difficulty, status,
-        platform, topic, page = 1, limit = 10 } = req.query;
+        platform, topic, sort = "newest", page = 1, limit = 10 } = req.query;
 
     const query = { user: req.user._id };
 
     if(search){
-        query.title = {
-            $regex: search,
-            $options: "i"
-        };
+        query.$or = [
+            {
+                title: {
+                    $regex: search,
+                    $options: "i",
+                },
+            },
+
+            {
+                topic: {
+                    $regex: search,
+                    $options: "i",
+                },
+            },
+
+            {
+                platform: {
+                    $regex: search,
+                    $options: "i",
+                },
+            },
+
+        ];
+
     }
 
     if(difficulty) query.difficulty = difficulty;
@@ -42,10 +62,28 @@ const getAllProblems = asyncHandler(async (req, res) => {
         .limit(Number(limit));
 
     const total = await Problem.countDocuments(query);
+    const solved = await Problem.countDocuments({
+        user: req.user._id, status: "Solved",
+    });
+    const attempted = await Problem.countDocuments({
+        user: req.user._id, status: "Attempted",
+    });
+    const todo = await Problem.countDocuments({
+        user: req.user._id, status: "Todo",
+    });
+    const easy = await Problem.countDocuments({
+        user: req.user._id, difficulty: "Easy",
+    });
+    const medium = await Problem.countDocuments({
+        user: req.user._id, difficulty: "Medium",
+    });
+    const hard = await Problem.countDocuments({
+        user: req.user._id, difficulty: "Hard",
+    });
 
     res.status(200).json({
         success: true,
-        total,
+        total, solved, attempted, todo, easy, medium, hard,
         page: Number(page),
         totalPages: Math.ceil(total / limit),
         problems

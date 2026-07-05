@@ -5,7 +5,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
 import Problems from "../pages/Problems";
-import AI from "../pages/AI";
+import AI from "../pages/AIAssistant";
 import MockInterview from "../pages/MockInterview";
 import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
