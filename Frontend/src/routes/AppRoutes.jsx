@@ -10,6 +10,7 @@ import MockInterview from "../pages/MockInterview";
 import Profile from "../pages/Profile";
 import NotFound from "../pages/NotFound";
 import DashboardLayout from "../layouts/DashboardLayout";
+import ResumeAnalysis from "../pages/ResumeAnalysis";
 
 import ProtectedRoute from "../components/common/ProtectedRoute";
 
@@ -49,10 +50,8 @@ const AppRoutes = () => {
                 element={<MockInterview />}
             />
 
-            <Route
-                path="/profile"
-                element={<Profile />}
-            />
+            <Route path="/profile" element={<Profile />}/>
+            <Route path="/resume-analysis" element={<ResumeAnalysis/>}/>
 
         </Route>
 

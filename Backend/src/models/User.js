@@ -26,6 +26,50 @@ const userSchema = new Schema({
         type : String,
         default : "",
     },
+    college: {
+        type: String,
+        default: "",
+        trim: true,
+    },
+    branch: {
+        type: String,
+        default: "",
+        trim: true,
+    },
+    graduationYear: {
+        type: Number,
+        default: null,
+    },
+    github: {
+        type: String,
+        default: "",
+        trim: true,
+    },
+    leetcode: {
+        type: String,
+        default: "",
+        trim: true,
+    },
+    codeforces: {
+        type: String,
+        default: "",
+        trim: true,
+    },
+    linkedin: {
+        type: String,
+        default: "",
+        trim: true,
+    },
+    skills: {
+        type: [String],
+        default: [],
+    },
+    bio: {
+        type: String,
+        default: "",
+        maxlength: 500,
+        trim: true,
+    },
     streak : {
         type : Number,
         default : 0,
