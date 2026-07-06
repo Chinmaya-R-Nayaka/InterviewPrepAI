@@ -29,7 +29,7 @@ const MockInterview = () => {
     if(interview.sessionId){
         return( 
             <InterviewScreen interview={interview}/>
-        );
+        );  
     }
     return(
         <div className="max-w-5xl mx-auto">

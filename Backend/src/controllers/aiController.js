@@ -8,8 +8,7 @@ const asyncHandler = require("../utils/asyncHandler");
 const chatWithAI = asyncHandler(async (req, res) => {
 
     const { message } = req.body;
-
-    if (!message) {
+    if(!message){
         return res.status(400).json({
             success: false,
             message: "Message is required",
@@ -27,17 +26,13 @@ const chatWithAI = asyncHandler(async (req, res) => {
             reply: response.text,
         });
     }
-    catch (err) {
-
+    catch(err){
         console.error(err);
-
         return res.status(500).json({
             success: false,
             message: "Gemini is currently unavailable. Please try again.",
         });
-
     }
-
 });
 
 
@@ -89,9 +84,7 @@ const startMockInterview = asyncHandler(async(req,res)=>{
     const question = await generateAIResponse(prompt);
     const session = await InterviewSession.create({
         user:req.user._id,
-        topic,
-        difficulty,
-        totalQuestions,
+        topic, difficulty, totalQuestions,
         history:[{ question }]
     });
 
