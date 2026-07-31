@@ -1,19 +1,6 @@
-import axios from "axios";
-
-const API = import.meta.env.VITE_BACKEND_URL;
+import api from "./api";
 
 export const getDashboard = async () => {
-
-    const res = await axios.get(
-
-        `${API}/api/dashboard`,
-
-        {
-            withCredentials: true,
-        }
-
-    );
-
+    const res = await api.get("/dashboard");
     return res.data;
-
 };

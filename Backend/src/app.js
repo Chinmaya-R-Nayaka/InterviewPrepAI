@@ -12,9 +12,27 @@ const userRouter = require("./routes/userRoutes");
 const errorMiddleware = require("./middleware/errorMiddleware");
 const app = express();
 
+console.log("CLIENT_URL =", process.env.CLIENT_URL);
 // Middlewares
+// app.use(cors({
+//     origin: ["http://localhost:5173", process.env.CLIENT_URL],
+//     credentials: true,
+// }));
+
+
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://interview-prep-ai-blush-pi.vercel.app",
+    "https://interview-prep-8fzqgyvno-chinmaya-projects.vercel.app",
+];
+
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin(origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
 }));
 
