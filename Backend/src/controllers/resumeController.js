@@ -84,3 +84,42 @@ exports.getResumeAnalysis=asyncHandler(async(req,res)=>{
     });
 
 });
+
+
+exports.getResumeHistory=asyncHandler(async(req,res)=>{
+
+    const resumes=await Resume.find({
+        user:req.user._id
+    }).sort({
+        createdAt:-1
+    });
+
+    res.status(200).json({
+        success:true,
+        resumes
+    });
+
+});
+
+exports.deleteResume=asyncHandler(async(req,res)=>{
+
+    const resume=await Resume.findOne({
+        _id:req.params.id,
+        user:req.user._id
+    });
+
+    if(!resume){
+        return res.status(404).json({
+            success:false,
+            message:"Resume not found"
+        });
+    }
+
+    await Resume.findByIdAndDelete(resume._id);
+
+    res.status(200).json({
+        success:true,
+        message:"Resume deleted successfully"
+    });
+
+});

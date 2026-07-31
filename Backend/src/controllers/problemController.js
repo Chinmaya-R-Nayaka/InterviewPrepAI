@@ -26,29 +26,12 @@ const getAllProblems = asyncHandler(async (req, res) => {
 
     if(search){
         query.$or = [
-            {
-                title: {
-                    $regex: search,
-                    $options: "i",
-                },
-            },
-
-            {
-                topic: {
-                    $regex: search,
-                    $options: "i",
-                },
-            },
-
-            {
-                platform: {
-                    $regex: search,
-                    $options: "i",
-                },
-            },
-
-        ];
-
+            {title: { $regex: search,
+                    $options: "i" // Case insensitive
+                }},
+            {topic: { $regex: search, $options: "i" }},
+            {platform: { $regex: search, $options: "i" }},
+        ]; // $or --> match atleast one condition
     }
 
     if(difficulty) query.difficulty = difficulty;

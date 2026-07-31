@@ -24,7 +24,26 @@ export const uploadResume=async(file)=>{
     return res.data;
 };
 
+
 export const getResumeAnalysis=async()=>{
     const res=await axios.get("/resume/analysis");
     return res.data.analysis;
+};
+
+
+export const getResumeHistory=async()=>{
+
+    const res=await axios.get("/resume/history");
+
+    return res.data.resumes;
+
+};
+
+
+export const deleteResume=async(id)=>{
+
+    const res=await axios.delete(`/resume/${id}`);
+
+    return res.data;
+
 };
